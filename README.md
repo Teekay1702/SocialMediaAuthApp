@@ -25,7 +25,7 @@ This project demonstrates how to integrate social media authentication (Google a
 Download the project source code or clone the repository:
 
 ```bash
-git clone https://github.com/your-repo/SocialMediaAuthApp.git
+git clone https://github.com/Teekay1702/SocialMediaAuthApp.git
 cd SocialMediaAuthApp
 ```
 
