@@ -12,14 +12,15 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
-        options.ClientId = "YOUR_GOOGLE_ID";
-        options.ClientSecret = "YOUR_SECRET_KEY";
+        options.ClientId = "63722064439-4f77ri717c5bpn2d1p89ksl87ce1726u.apps.googleusercontent.com";
+        options.ClientSecret = "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";
     })
     .AddFacebook(options =>
     {
-        options.AppId = "YOUR_FACEBOOK_APPID";
-        options.AppSecret = "YOUR_APP_SECRET";
+        options.AppId = "1020572370179606";
+        options.AppSecret = "59e6d02e989f6b001a40efe9ca0cbd65";
     });
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();

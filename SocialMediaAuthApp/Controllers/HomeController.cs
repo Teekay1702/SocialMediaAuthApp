@@ -15,8 +15,14 @@ namespace SocialMediaAuthApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+            return View(); // Show your actual Index.cshtml page
         }
+
 
         public IActionResult Privacy()
         {
