@@ -1,14 +1,24 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaAuthApp.Data;
+using SocialMediaAuthApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var taskManager = builder.Configuration.GetConnectionString("TaskManager") ?? throw new InvalidOperationException("Connection string 'TaskManager' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddDbContext<TaskDbContext>(options =>
+    options.UseSqlServer(taskManager));
+
+builder.Services.AddSignalR();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
@@ -49,6 +59,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapHub<TaskHub>("/taskHub");
 app.MapRazorPages();
 
 app.Run();
