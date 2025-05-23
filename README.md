@@ -1,14 +1,15 @@
 
 # Social Media Authentication System in ASP.NET Core with Identity
 
-This project demonstrates how to integrate social media authentication (Google and Facebook) in an ASP.NET Core MVC application using Identity.
+This ASP.NET Core MVC application integrates social media authentication (Google and Facebook) using ASP.NET Core Identity, and includes a real-time task management system where authenticated users can create, edit, and delete personal tasks. Real-time updates are powered by SignalR.
 
 ## Features
 
 - Google and Facebook authentication using OAuth 2.0
 - ASP.NET Core Identity integration
 - Custom login page with Google Sign-In
-- Optional use of default Identity UI
+- Real-time task management system using SignalR
+- Tasks are user-specific and only visible to authenticated users
 - SQL Server support for user data storage
 
 ## Prerequisites
@@ -99,14 +100,26 @@ app.UseAuthorization();
 
 Use this to add a custom login button for Google.
 
-### 8. Testing
+### 8. Real-Time Task Management
+- Uses SignalR for real-time communication between clients
+- Task CRUD operations are handled in HomeController.cs
+- Task data is tied to the authenticated user via Identity
+- Tasks are broadcast to all connected clients after updates
+
+### Example Endpoints:
+- Add Task: POST /Home/AddTask
+- Edit Task: POST /Home/EditTask
+- Delete Task: POST /Home/DeleteTask
+- SignalR hub is defined in Hubs/TaskHub.cs and connected via JavaScript on the frontend.
+
+### 9. Testing
 
 Run the app and test:
 
 - Custom Login: `https://localhost:7149/Account/Login`
 - Default Identity Login: `https://localhost:7149/Identity/Account/Login`
 
-### 9. Notes
+### 10. Notes
 
 - Ensure redirect URIs match exactly in Google and Facebook dev consoles.
 - Use the correct port (e.g., 7149) in the redirect URIs.
