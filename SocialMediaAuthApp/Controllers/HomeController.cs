@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SocialMediaAuthApp.Data;
@@ -30,18 +30,32 @@ namespace SocialMediaAuthApp.Controllers
                 return Redirect("/Identity/Account/Login");
             }
 
-            var tasks = _context.Tasks.ToList();
-            return View(tasks); // Show your actual Index.cshtml page
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var tasks = _context.Tasks
+                                .Where(t => t.UserId == userId)
+                                .ToList();  // 👈 EF Core will now translate this
+
+            return View(tasks);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddTask([FromBody] TaskModel task)
         {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            task.UserId = userId; // 👈 Assign user ID
+
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
+
             await _hubContext.Clients.All.SendAsync("ReceiveTaskUpdate", task);
             return Ok();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> EditTask([FromBody] TaskModel updatedTask)
